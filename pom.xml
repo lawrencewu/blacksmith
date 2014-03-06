@@ -1,0 +1,127 @@
+<?xml version="1.0"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+   <modelVersion>4.0.0</modelVersion>
+
+   <parent>
+      <groupId>com.ctriposs.blacksmith</groupId>
+      <artifactId>blacksmith-parent</artifactId>
+      <version>1.0.0</version>
+      <relativePath>parent/pom.xml</relativePath>
+   </parent>
+
+   <artifactId>blacksmith-aggregator</artifactId>
+   <name>BlackSmith - Aggregator</name>
+   <description>The aggregator for BlackSmith</description>
+   <packaging>pom</packaging>
+
+   <modules>
+      <module>parent</module>
+      <module>framework</module>
+      <module>plugins</module>
+      <!--module>plugins/ehcache26</module-->
+      <module>plugins/chm</module>
+   </modules>
+
+   <properties>
+      <distribution.name>BlackSmith-${project.version}</distribution.name>
+      <distribution.artifact>target/distribution/${distribution.name}</distribution.artifact>
+      <distribution.zipfile>target/distribution/${distribution.name}.zip</distribution.zipfile>
+   </properties>
+
+   <build>
+      <plugins>
+         <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-antrun-plugin</artifactId>
+            <version>1.3</version>
+            <executions>
+               <execution>
+                  <id>prepare_distribution</id>
+                  <phase>post-integration-test</phase>
+                  <goals>
+                     <goal>run</goal>
+                  </goals>
+                  <configuration>
+                     <tasks>
+                        <delete dir="target/distribution" />
+                        <mkdir dir="target/distribution" />
+                        <mkdir dir="${distribution.artifact}" />
+                     </tasks>
+                  </configuration>
+               </execution>
+
+               <execution>
+                  <id>prepare_plugins</id>
+                  <phase>verify</phase>
+                  <goals>
+                     <goal>run</goal>
+                  </goals>
+                  <configuration>
+                     <tasks>
+                        <!-- echo message="Generating XSD schema" />
+                        <java classname="com.ctriposs.blacksmith.config.ConfigSchemaGenerator" failonerror="true">
+                           <classpath>
+                              <fileset dir="framework/target/distribution/blacksmith-framework-bin/blacksmith-framework/lib">
+                                 <include name="*.jar" />
+                              </fileset>
+                           </classpath>
+                           <arg value="framework/src/main/resources" />
+                           <arg value="framework/target/distribution/blacksmith-framework-bin/blacksmith-framework/lib" /-->
+                           <!--arg value="ehcache26" /-->
+                           <!-- >arg value="chm" />
+                        </java-->
+
+                        <echo message="Packaging the framework, and the following plugins:  chm, ehcache26" />
+
+
+                        <!--copy todir="${distribution.artifact}/plugins/ehcache26">
+                           <fileset dir="plugins/ehcache26/target/distribution/plugin-ehcache26-bin/plugin-ehcache26">
+                              <include name="**/*" />
+                           </fileset>
+                        </copy-->
+
+                        <copy todir="${distribution.artifact}/plugins/chm">
+                           <fileset dir="plugins/chm/target/distribution/plugin-chm-bin/plugin-chm">
+                              <include name="**/*" />
+                           </fileset>
+                        </copy>
+                     </tasks>
+                  </configuration>
+               </execution>
+
+               <execution>
+                  <id>build_distro</id>
+                  <phase>install</phase>
+                  <goals>
+                     <goal>run</goal>
+                  </goals>
+                  <configuration>
+                     <tasks>
+                        <echo message="Packaging the framework, common scripts and building archive" />
+                        <copy todir="${distribution.artifact}">
+                           <fileset dir="framework/target/distribution/blacksmith-framework-bin/blacksmith-framework">
+                              <include name="**/*" />
+                           </fileset>
+                        </copy>
+                        <copy todir="${distribution.artifact}/bin">
+                           <fileset dir="bin">
+                              <include name="**/*" />
+                           </fileset>
+                        </copy>
+                        <chmod perm="ugo+rwx" type="file">
+                           <fileset dir="${distribution.artifact}/bin">
+                              <include name="**/*.sh" />
+                              <include name="**/*.py" />
+                           </fileset>
+                        </chmod>
+                        <zip destfile="${distribution.zipfile}" basedir="target/distribution" excludes="**/bin/**">
+                           <zipfileset dir="${distribution.artifact}/bin" filemode="755" prefix="${distribution.name}/bin" />
+                        </zip>
+                     </tasks>
+                  </configuration>
+               </execution>
+            </executions>
+         </plugin>
+      </plugins>
+   </build>
+</project>

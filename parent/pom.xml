@@ -1,0 +1,170 @@
+<?xml version="1.0"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+   <modelVersion>4.0.0</modelVersion>
+
+   <groupId>com.ctriposs.blacksmith</groupId>
+   <artifactId>blacksmith-parent</artifactId>
+   <version>1.0.0</version>
+
+   <name>BlackSmith - Parent POM</name>
+   <description>The parent POM for BlackSmith</description>
+   <packaging>pom</packaging>
+
+   <build>
+      <plugins>
+         <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-release-plugin</artifactId>
+            <version>2.4.2</version>
+            <configuration>
+               <autoVersionSubmodules>true</autoVersionSubmodules>
+            </configuration>
+         </plugin>
+         <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <version>2.4.3</version>
+         </plugin>
+         <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-eclipse-plugin</artifactId>
+            <version>2.7</version>
+            <configuration>
+               <downloadSources>true</downloadSources>
+               <buildOutputDirectory>${basedir}/eclipse-output</buildOutputDirectory>
+            </configuration>
+         </plugin>
+         <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-idea-plugin</artifactId>
+            <version>2.2</version>
+            <configuration>
+               <downloadSources>true</downloadSources>
+            </configuration>
+         </plugin>
+
+         <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-enforcer-plugin</artifactId>
+            <version>1.0-beta-1</version>
+            <executions>
+               <execution>
+                  <id>enforce-java</id>
+                  <goals>
+                     <goal>enforce</goal>
+                  </goals>
+                  <configuration>
+                     <rules>
+                        <requireJavaVersion>
+                           <version>[1.6,)</version>
+                        </requireJavaVersion>
+                        <requireMavenVersion>
+                           <version>[2.1.0,)</version>
+                        </requireMavenVersion>
+                     </rules>
+                  </configuration>
+               </execution>
+            </executions>
+         </plugin>
+         <!-- by default, compile to JDK 1.6 compatibility (individual modules and/or user can override) -->
+         <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <version>2.3.2</version>
+            <configuration>
+               <source>1.6</source>
+               <target>1.6</target>
+               <encoding>UTF-8</encoding>
+            </configuration>
+         </plugin>
+
+         <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-resources-plugin</artifactId>
+            <version>2.4.3</version>
+            <configuration>
+               <encoding>UTF-8</encoding>
+            </configuration>
+         </plugin>
+         <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-jar-plugin</artifactId>
+            <version>2.3</version>
+            <configuration>
+               <archive>
+                  <manifest>
+                     <mainClass>com.ctriposs.blacksmith.Version</mainClass>
+                  </manifest>
+               </archive>
+               <excludes>
+                  <exclude>**/*.xml</exclude>
+                  <exclude>**/*.sh</exclude>
+                  <exclude>**/*.py</exclude>
+                  <exclude>**/*.bat</exclude>
+                  <exclude>**/*.txt</exclude>
+               </excludes>
+            </configuration>
+         </plugin>
+         <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-assembly-plugin</artifactId>
+            <version>2.4</version>
+            <executions>
+               <execution>
+                  <id>assemble</id>
+                  <phase>package</phase>
+                  <goals>
+                     <goal>single</goal>
+                  </goals>
+               </execution>
+            </executions>
+            <configuration>
+               <descriptors>
+                  <descriptor>src/main/resources/assembly/bin.xml</descriptor>
+               </descriptors>
+               <finalName>${project.artifactId}</finalName>
+               <outputDirectory>target/distribution</outputDirectory>
+               <workDirectory>target/assembly/work</workDirectory>
+            </configuration>
+         </plugin>
+      </plugins>
+   </build>
+
+   <dependencies>
+      <dependency>
+         <groupId>org.testng</groupId>
+         <artifactId>testng</artifactId>
+         <version>5.8</version>
+         <scope>test</scope>
+         <classifier>jdk15</classifier>
+      </dependency>
+   </dependencies>
+
+   <repositories>
+      <!-- basic JBoss repository -->
+      <repository>
+         <id>jboss-public-repository-group</id>
+         <url>http://repository.jboss.org/nexus/content/groups/public-jboss</url>
+      </repository>
+   </repositories>
+
+   <pluginRepositories>
+      <pluginRepository>
+         <id>Main Maven Repo</id>
+         <url>http://repo1.maven.org/maven2/</url>
+      </pluginRepository>
+      <pluginRepository>
+         <id>snapshots.repository.codehaus.org</id>
+         <url>http://snapshots.repository.codehaus.org</url>
+      </pluginRepository>
+      <pluginRepository>
+         <id>jboss-public-repository-group</id>
+         <url>http://repository.jboss.org/nexus/content/groups/public-jboss</url>
+      </pluginRepository>
+   </pluginRepositories>
+
+   <properties>
+      <!-- By default don't run unit tests for the fwk! -->
+      <maven.test.skip>true</maven.test.skip>
+   </properties>
+</project>
