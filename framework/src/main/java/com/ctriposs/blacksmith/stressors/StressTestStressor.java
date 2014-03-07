@@ -115,13 +115,13 @@ public class StressTestStressor extends AbstractCacheWrapperStressor {
    @Property(doc = "Keep all keys in a pool - do not generate the keys for each request anew. Default is true.")
    protected boolean poolKeys = true;
 
-   @Property(doc = "Full class name of the key generator. Default is org.radargun.stressors.StringKeyGenerator.")
+   @Property(doc = "Full class name of the key generator. Default is com.ctriposs.blacksmith.stressors.StringKeyGenerator.")
    private String keyGeneratorClass = StringKeyGenerator.class.getName();
 
    @Property(doc = "Used to initialize the key generator. Null by default.")
    private String keyGeneratorParam = null;
 
-   @Property(doc = "Full class name of the value generator. Default is org.radargun.stressors.ByteArrayValueGenerator if useAtomics=false and org.radargun.stressors.WrappedArrayValueGenerator otherwise.")
+   @Property(doc = "Full class name of the value generator. Default is com.ctriposs.blacksmith.stressors.ByteArrayValueGenerator if useAtomics=false and com.ctriposs.blacksmith.stressors.WrappedArrayValueGenerator otherwise.")
    private String valueGeneratorClass = null;
 
    @Property(doc = "Used to initialize the value generator. Null by default.")
@@ -147,7 +147,7 @@ public class StressTestStressor extends AbstractCacheWrapperStressor {
    private int numNodes = 1;
 
    /**
-    * This node's index in the Radargun cluster.  -1 is used for local benchmarks.
+    * This node's index in the Blacksmith cluster.  -1 is used for local benchmarks.
     */
    private int nodeIndex = -1;
 

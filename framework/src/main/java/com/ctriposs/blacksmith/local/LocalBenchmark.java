@@ -26,7 +26,7 @@ import com.ctriposs.blacksmith.utils.TypedProperties;
 import com.ctriposs.blacksmith.utils.Utils;
 
 /**
- * @author Mircea.Markus@jboss.com
+ * @author bulldog
  */
 public class LocalBenchmark {
 

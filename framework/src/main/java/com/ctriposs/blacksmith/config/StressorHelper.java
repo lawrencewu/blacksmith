@@ -48,7 +48,7 @@ public class StressorHelper {
       if (clazz == null) {
          log.warn("Stressor " + stressorName + " not registered, trying to find according to class name.");
          if (stressorName.indexOf('.') < 0) {
-            stressorName = "org.radargun.stressors." + stressorName + "Stressor";
+            stressorName = "com.ctriposs.blacksmith.stressors." + stressorName + "Stressor";
          } else {
             stressorName = stressorName + "Stressor";
          }

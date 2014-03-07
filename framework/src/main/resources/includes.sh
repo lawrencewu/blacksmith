@@ -3,14 +3,14 @@
 # NOTE that this *needs* to be loaded via the following snippet:
 #
 #
-#   if [ "x$RADARGUN_HOME" = "x" ]; then RADARGUN_HOME=`cd $DIRNAME/..; pwd` ; fi; export RADARGUN_HOME
-#   . ${RADARGUN_HOME}/bin/includes.sh
+#   if [ "x$BLACKSMITH_HOME" = "x" ]; then BLACKSMITH=`cd $DIRNAME/..; pwd` ; fi; export BLACKSMITH_HOME
+#   . ${BLACKSMITH_HOME}/bin/includes.sh
 #
-# as a "side effect", the snippet also sets the RADARGUN_HOME environment variable.
+# as a "side effect", the snippet also sets the BLACKSMITH_HOME environment variable.
 
 welcome() {
   SCRIPTNAME=`basename ${0}`
-  echo "=== Radargun: ${SCRIPTNAME} ==="
+  echo "=== Blacksmith: ${SCRIPTNAME} ==="
   wrappedecho "${1}"
   echo ""
 }
@@ -21,8 +21,8 @@ wrappedecho() {
 
 check_plugin_exists() {
   PLUGIN=${1}
-  if ! [ -d ${RADARGUN_HOME}/plugins/$PLUGIN ] ; then
-    echo "FATAL: unknown plugin ${PLUGIN}! Directory doesn't exist in ${RADARGUN_HOME}/plugins!"
+  if ! [ -d ${BLACKSMITH_HOME}/plugins/$PLUGIN ] ; then
+    echo "FATAL: unknown plugin ${PLUGIN}! Directory doesn't exist in ${BLACKSMITH_HOME}/plugins!"
     exit 2
   fi
 }
@@ -38,21 +38,21 @@ add_to_classpath() {
 add_plugin_to_classpath() {
   PLUGIN=${1}
   check_plugin_exists $PLUGIN
-  for i in ${RADARGUN_HOME}/plugins/${PLUGIN}/lib/*.jar ; do
+  for i in ${BLACKSMITH_HOME}/plugins/${PLUGIN}/lib/*.jar ; do
     add_to_classpath $i
   done
-  add_to_classpath ${RADARGUN_HOME}/plugins/${PLUGIN}/conf
+  add_to_classpath ${BLACKSMITH_HOME}/plugins/${PLUGIN}/conf
 }
 
 add_fwk_to_classpath() {
-  for i in ${RADARGUN_HOME}/lib/*.jar ; do
+  for i in ${BLACKSMITH_HOME}/lib/*.jar ; do
     add_to_classpath $i
   done
-  add_to_classpath ${RADARGUN_HOME}/conf
+  add_to_classpath ${BLACKSMITH_HOME}/conf
 }
 
 set_env() {
-  . ${RADARGUN_HOME}/bin/environment.sh
+  . ${BLACKSMITH_HOME}/bin/environment.sh
 
   # If the user specified a JAVA_HOME, use that
   if [ -n "$JAVA_HOME" ]

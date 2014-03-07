@@ -1,8 +1,8 @@
 #!/bin/bash
 
 ## Load includes
-if [ "x$RADARGUN_HOME" = "x" ]; then DIRNAME=`dirname $0`; RADARGUN_HOME=`cd $DIRNAME/..; pwd` ; fi; export RADARGUN_HOME
-. ${RADARGUN_HOME}/bin/includes.sh
+if [ "x$BLACKSMITH_HOME" = "x" ]; then DIRNAME=`dirname $0`; BLACKSMITH_HOME=`cd $DIRNAME/..; pwd` ; fi; export BLACKSMITH_HOME
+. ${BLACKSMITH_HOME}/bin/includes.sh
 
 CONFIG=./conf/local-benchmark.xml
 
@@ -36,4 +36,4 @@ done
 
 add_fwk_to_classpath
 set_env
-${JAVA} ${JVM_OPTS} -XX:+HeapDumpOnOutOfMemoryError -classpath $CP -Dbind.address=${BIND_ADDRESS} org.radargun.local.LaunchLocal -config ${CONFIG}
+${JAVA} ${JVM_OPTS} -XX:+HeapDumpOnOutOfMemoryError -classpath $CP -Dbind.address=${BIND_ADDRESS} com.ctriposs.blacksmith.local.LaunchLocal -config ${CONFIG}
