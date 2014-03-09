@@ -40,7 +40,7 @@
          <groupId>log4j</groupId>
          <artifactId>log4j</artifactId>
          <version>${version.log4j}</version>
-         <scope>provided</scope>
+         <!-- scope>provided</scope-->
          <optional>true</optional>
       </dependency>
    </dependencies>

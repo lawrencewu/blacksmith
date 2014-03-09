@@ -20,6 +20,7 @@
       <module>plugins</module>
       <!--module>plugins/ehcache26</module-->
       <module>plugins/chm</module>
+	  <module>plugins/bigmap</module>
    </modules>
 
    <properties>
@@ -71,7 +72,7 @@
                            <!-- >arg value="chm" />
                         </java-->
 
-                        <echo message="Packaging the framework, and the following plugins:  chm, ehcache26" />
+                        <echo message="Packaging the framework, and the following plugins:  chm, bigmap" />
 
 
                         <!--copy todir="${distribution.artifact}/plugins/ehcache26">
@@ -82,6 +83,11 @@
 
                         <copy todir="${distribution.artifact}/plugins/chm">
                            <fileset dir="plugins/chm/target/distribution/plugin-chm-bin/plugin-chm">
+                              <include name="**/*" />
+                           </fileset>
+                        </copy>
+                        <copy todir="${distribution.artifact}/plugins/bigmap">
+                           <fileset dir="plugins/bigmap/target/distribution/plugin-bigmap-bin/plugin-bigmap">
                               <include name="**/*" />
                            </fileset>
                         </copy>

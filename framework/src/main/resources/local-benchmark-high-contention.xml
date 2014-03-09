@@ -7,15 +7,12 @@
    </benchmark>
 
    <products>
-      <infinispan50>
-         <config name="local-config.xml" cache="x"/>
-      </infinispan50>
-      <infinispan51>
-         <config name="local-config.xml" cache="x"/>
-      </infinispan51>
-      <infinispan52>
-         <config name="local-config.xml" cache="x"/>
-      </infinispan52>
+      <chm>
+         <config name="chm"/>
+       </chm>
+      <bigmap>
+         <config name="bigmap" />
+      </bigmap>
    </products>
 
    <reports>

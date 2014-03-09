@@ -30,12 +30,16 @@ public class WrappedArrayValueGenerator implements ValueGenerator {
    }
 
    /* Because byte[].equals compares only pointers */
-   private static class ByteArrayWrapper implements Serializable {
+   public static class ByteArrayWrapper implements Serializable {
       private byte[] array;
       private transient int hashCode = 0;
 
       public ByteArrayWrapper(byte[] array) {
          this.array = array;
+      }
+      
+      public byte[] getBytes() {
+    	  return array;
       }
 
       @Override

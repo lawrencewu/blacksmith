@@ -179,6 +179,19 @@ public class StressTestStressor extends AbstractCacheWrapperStressor {
       if (wrapper instanceof BulkOperationsCapable) {
          bulkCacheWrapper = (BulkOperationsCapable) wrapper;
       }
+      
+      numNodes = 1;
+      txCount = new AtomicInteger(0);
+      keyGenerator = null;
+      valueGenerator = null;
+      sharedKeysPool = new ArrayList<Object>();
+      synchronizer = new PhaseSynchronizer();
+      finished = false;
+      terminated = false;
+      keysLoaded = new AtomicLong(0);
+      stressors = new ArrayList<Stressor>(numThreads);
+      statisticsPrototype = new SimpleStatistics();
+      
       startNanos = System.nanoTime();
       log.info("Executing: " + this.toString());
    }
@@ -295,10 +308,12 @@ public class StressTestStressor extends AbstractCacheWrapperStressor {
          if (removePercentage > 0) {
             throw new IllegalArgumentException("Removes cannot be configured in when using non-fixed keys");
          }
+         log.info("using ChangingSetOperationLogic");
          return new ChangingSetOperationLogic();
       } else if (bulkSize != 1) {
          if (bulkSize > 1 && bulkSize <= numEntries) {
             if (cacheWrapper instanceof BulkOperationsCapable) {
+               log.info("using BulkOperationLogic");
                if (sharedKeys) {
                   return new BulkOperationLogic(new FixedSetSharedOperationLogic(sharedKeysPool), preferAsyncOperations);
                } else {
@@ -317,13 +332,16 @@ public class StressTestStressor extends AbstractCacheWrapperStressor {
             if (!poolKeys) {
                log.warn("Keys are not pooled, but last values must be recorded!");
             }
+            log.info("using FixedSetAtomicOperationLogic");
             return new FixedSetAtomicOperationLogic();
          } else {
             throw new IllegalArgumentException("Atomics can be executed only on wrapper which supports atomic operations.");
          }
       } else if (sharedKeys) {
+         log.info("using FixedSetSharedOperationLogic");
          return new FixedSetSharedOperationLogic(sharedKeysPool);
       } else {
+          log.info("using FixedSetPerThreadOperationLogic");
          return new FixedSetPerThreadOperationLogic();
       }
    }
@@ -469,15 +487,15 @@ public class StressTestStressor extends AbstractCacheWrapperStressor {
             }
          }
          int loadedEntryCount, keyIndex, loadingThreads;
-         if (loadAllKeys) {
+         //if (loadAllKeys) {
             loadedEntryCount = numEntries;
             loadingThreads = numThreads;
             keyIndex = threadIndex;
-         } else {
+         /*} else {
             loadedEntryCount = numEntries / numNodes + (nodeIndex < numEntries % numNodes ? 1 : 0);
             loadingThreads = numThreads * numNodes;
             keyIndex = threadIndex + nodeIndex * numThreads;
-         }
+         }*/
          if (threadIndex == 0) {
             log.info(String.format("We have loaded %d keys, expecting %d locally loaded, %d in cache",
                   keysLoaded.get(), loadedEntryCount, cacheWrapper.getLocalSize()));
